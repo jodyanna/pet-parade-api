@@ -1,5 +1,6 @@
 package com.petparade.api.controller;
 
+import com.petparade.api.exception.ResourceNotFoundException;
 import com.petparade.api.model.User;
 import com.petparade.api.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +15,12 @@ import java.util.List;
 @RestController
 @RequestMapping("/")
 public class UserController {
+  private final UserRepository userRepository;
+
   @Autowired
-  private UserRepository userRepository;
+  public UserController(UserRepository userRepository) {
+    this.userRepository = userRepository;
+  }
 
   @GetMapping("/users")
   public List<User> getAllUsers() {
@@ -23,8 +28,10 @@ public class UserController {
   }
 
   @GetMapping("users/{id}")
-  public ResponseEntity<User> getUserById(@PathVariable(value = "id") Long userId) {
-    User user = userRepository.findUserById(userId);
+  public ResponseEntity<User> getUserById(@PathVariable(value = "id") Long userId) throws ResourceNotFoundException {
+    User user = userRepository
+        .findById(userId)
+        .orElseThrow(() -> new ResourceNotFoundException("Could not find user with id::" + userId));
 
     return ResponseEntity.ok().body(user);
   }
