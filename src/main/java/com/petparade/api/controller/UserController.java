@@ -29,4 +29,14 @@ public class UserController {
     return ResponseEntity.ok().body(user);
   }
 
+  @GetMapping("users/{email}/{password}")
+  public ResponseEntity<User> getUserByLogin(
+      @PathVariable(value = "email") String email,
+      @PathVariable(value = "password") String password
+      ) {
+    User user = userRepository.findUserByEmailAndPassword(email, password);
+
+    return ResponseEntity.ok().body(user);
+  }
+
 }
