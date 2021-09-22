@@ -3,6 +3,9 @@ package com.petparade.api.controller;
 import com.petparade.api.dto.UserDto;
 import com.petparade.api.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,10 +30,12 @@ public class UserController {
     return userService.findById(id);
   }
 
-  @PostMapping
-  public UserDto save(@RequestBody UserDto userDto) {
+  @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<UserDto> save(@RequestBody UserDto userDto) {
     userDto.setId(null);
-    return this.userService.save(userDto);
+    UserDto body = this.userService.save(userDto);
+
+    return new ResponseEntity<>(body, HttpStatus.OK);
   }
 
   @PutMapping

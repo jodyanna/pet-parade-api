@@ -1,17 +1,22 @@
 package com.petparade.api.dto;
 
 import com.petparade.api.model.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class UserDto {
   private Long id;
   private String username;
   private String email;
+  private String password;
   private String city;
   private String state;
   private Date dateCreated;
@@ -24,6 +29,7 @@ public class UserDto {
     this.setId(user.getId());
     this.setUsername(user.getUsername());
     this.setEmail(user.getEmail());
+    this.setPassword(user.getPassword());
     this.setCity(user.getCity());
     this.setState(user.getState());
     this.setDateCreated(user.getDateCreated());
