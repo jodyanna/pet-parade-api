@@ -1,49 +1,46 @@
 package com.petparade.api.controller;
 
-import com.petparade.api.exception.ResourceNotFoundException;
-import com.petparade.api.model.User;
-import com.petparade.api.repository.UserRepository;
+import com.petparade.api.dto.UserDto;
+import com.petparade.api.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/")
+@RequestMapping("users")
 public class UserController {
-  private final UserRepository userRepository;
+  private final UserService userService;
 
   @Autowired
-  public UserController(UserRepository userRepository) {
-    this.userRepository = userRepository;
+  public UserController(UserService userService) {
+    this.userService = userService;
   }
 
-  @GetMapping("/users")
-  public List<User> getAllUsers() {
-    return (List<User>) userRepository.findAll();
+  @GetMapping
+  public List<UserDto> getAllUsers() {
+    return userService.findAll();
   }
 
-  @GetMapping("users/{id}")
-  public ResponseEntity<User> getUserById(@PathVariable(value = "id") Long userId) throws ResourceNotFoundException {
-    User user = userRepository
-        .findById(userId)
-        .orElseThrow(() -> new ResourceNotFoundException("Could not find user with id::" + userId));
-
-    return ResponseEntity.ok().body(user);
+  @GetMapping("{id}")
+  public UserDto getUserById(@PathVariable Long id) {
+    return userService.findById(id);
   }
 
-  @GetMapping("users/{email}/{password}")
-  public ResponseEntity<User> getUserByLogin(
-      @PathVariable(value = "email") String email,
-      @PathVariable(value = "password") String password
-      ) {
-    User user = userRepository.findUserByEmailAndPassword(email, password);
+  @PostMapping
+  public UserDto save(@RequestBody UserDto userDto) {
+    userDto.setId(null);
+    return this.userService.save(userDto);
+  }
 
-    return ResponseEntity.ok().body(user);
+  @PutMapping
+  public UserDto update(@RequestBody UserDto userDto) {
+    return this.userService.save(userDto);
+  }
+
+  @DeleteMapping("{id}")
+  public void deleteUserById(@PathVariable Long id) {
+    this.userService.deleteById(id);
   }
 
 }

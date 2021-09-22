@@ -2,6 +2,7 @@ package com.petparade.api.model;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -42,16 +43,26 @@ public class User {
   @OneToMany(mappedBy = "user")
   private Set<Pet> pets;
 
-  @OneToMany(mappedBy = "pet")
-  private Set<Like> likedPets;
+  @ManyToMany
+  @JoinTable(
+      name = "Likes",
+      joinColumns = @JoinColumn(name = "FK_Likes_Users"),
+      inverseJoinColumns = @JoinColumn(name = "FK_Likes_Pets")
+  )
+  private Set<Pet> likedPets;
 
-  @OneToMany(mappedBy = "user")
+  @OneToMany(
+      mappedBy = "user",
+      cascade = CascadeType.ALL,
+      fetch = FetchType.LAZY,
+      orphanRemoval = true
+  )
   private Set<Rating> ratings;
 
   // Constructors
   public User() {}
 
-  public User(Long id, String username, String email, String password, String city, String state, Date dateCreated, Date dateModified, Set<Role> roles, Set<Pet> pets, Set<Like> likedPets, Set<Rating> ratings) {
+  public User(Long id, String username, String email, String password, String city, String state, Date dateCreated, Date dateModified, Set<Role> roles, Set<Pet> pets, Set<Pet> likedPets, Set<Rating> ratings) {
     this.id = id;
     this.username = username;
     this.email = email;
@@ -107,7 +118,7 @@ public class User {
     return pets;
   }
 
-  public Set<Like> getLikedPets() {
+  public Set<Pet> getLikedPets() {
     return likedPets;
   }
 
@@ -156,7 +167,7 @@ public class User {
     this.pets = pets;
   }
 
-  public void setLikedPets(Set<Like> likedPets) {
+  public void setLikedPets(Set<Pet> likedPets) {
     this.likedPets = likedPets;
   }
 

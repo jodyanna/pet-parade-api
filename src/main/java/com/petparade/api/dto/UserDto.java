@@ -44,8 +44,8 @@ public class UserDto {
 
     // Set user liked pets as list of ids
     List<Long> userLikedPets = new ArrayList<>();
-    for (Like like : user.getLikedPets()) {
-      userLikedPets.add(like.getPet().getId());
+    for (Pet pet : user.getLikedPets()) {
+      userLikedPets.add(pet.getId());
     }
     this.setLikedPets(userLikedPets);
 

@@ -47,8 +47,8 @@ public class Pet {
   @JoinColumn(name = "FK_Pets_Species", referencedColumnName = "id")
   private Species species;
 
-  @OneToMany(mappedBy = "user")
-  private Set<Like> userLikes;
+  @ManyToMany(mappedBy = "likedPets")
+  private Set<User> userLikes;
 
   @OneToMany(mappedBy = "pet")
   private Set<Rating> ratings;
@@ -56,7 +56,7 @@ public class Pet {
   // Constructors
   public Pet() {}
 
-  public Pet(String name, String bio, Date birthday, Boolean isFlagged, Date dateCreated, Date dateModified, String image, User user, Species species, Set<Like> userLikes, Set<Rating> ratings) {
+  public Pet(String name, String bio, Date birthday, Boolean isFlagged, Date dateCreated, Date dateModified, String image, User user, Species species, Set<User> userLikes, Set<Rating> ratings) {
     this.name = name;
     this.bio = bio;
     this.birthday = birthday;
@@ -111,7 +111,7 @@ public class Pet {
     return species;
   }
 
-  public Set<Like> getUserLikes() {
+  public Set<User> getUserLikes() {
     return userLikes;
   }
 
@@ -160,7 +160,7 @@ public class Pet {
     this.species = species;
   }
 
-  public void setUserLikes(Set<Like> userLikes) {
+  public void setUserLikes(Set<User> userLikes) {
     this.userLikes = userLikes;
   }
 

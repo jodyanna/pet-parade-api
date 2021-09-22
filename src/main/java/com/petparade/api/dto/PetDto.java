@@ -1,8 +1,8 @@
 package com.petparade.api.dto;
 
-import com.petparade.api.model.Like;
 import com.petparade.api.model.Pet;
 import com.petparade.api.model.Rating;
+import com.petparade.api.model.User;
 import lombok.Data;
 
 import java.util.ArrayList;
@@ -43,8 +43,8 @@ public class PetDto {
 
     // Set liking users with list of user ids
     List<Long> petLikingUsers = new ArrayList<>();
-    for (Like like : pet.getUserLikes()) {
-      petLikingUsers.add(like.getUser().getId());
+    for (User user : pet.getUserLikes()) {
+      petLikingUsers.add(user.getId());
     }
     this.setLikingUsers(petLikingUsers);
   }
