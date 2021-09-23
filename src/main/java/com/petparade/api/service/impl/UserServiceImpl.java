@@ -46,6 +46,15 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
+  public UserDto findByEmailAndPassword(String email, String password) {
+    User user = this.userRepository
+        .findByEmailAndPassword(email, password)
+        .orElseThrow(() -> new ResourceNotFoundException("Could not find user with email: " + email + ", or password is incorrect."));
+
+    return new UserDto(user);
+  }
+
+  @Override
   public List<UserDto> findAll() {
     return this.userRepository
         .findAll()
@@ -72,11 +81,6 @@ public class UserServiceImpl implements UserService {
     }
 
     return new UserDto(savedUser);
-  }
-
-  @Override
-  public UserDto update(UserDto userDto) {
-    return null;
   }
 
   @Override

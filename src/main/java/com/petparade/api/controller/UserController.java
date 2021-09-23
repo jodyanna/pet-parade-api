@@ -22,12 +22,21 @@ public class UserController {
 
   @GetMapping
   public List<UserDto> getAllUsers() {
-    return userService.findAll();
+    return this.userService.findAll();
   }
 
   @GetMapping("{id}")
   public UserDto getUserById(@PathVariable Long id) {
-    return userService.findById(id);
+    return this.userService.findById(id);
+  }
+
+  @PostMapping(
+      value = "login",
+      consumes = MediaType.APPLICATION_JSON_VALUE,
+      produces = MediaType.APPLICATION_JSON_VALUE
+  )
+  public UserDto getUserByEmailAndPassword(@RequestBody UserDto userDto) {
+    return this.userService.findByEmailAndPassword(userDto.getEmail(), userDto.getPassword());
   }
 
   @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
