@@ -22,6 +22,7 @@ public class Pet {
   private String bio;
 
   @Column(name = "birthday")
+  @Temporal(TemporalType.DATE)
   private Date birthday;
 
   @Column(name = "isFlagged")
