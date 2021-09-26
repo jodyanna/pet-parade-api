@@ -1,5 +1,6 @@
 package com.petparade.api.service.impl;
 
+import com.petparade.api.dto.SpeciesDto;
 import com.petparade.api.model.Species;
 import com.petparade.api.repository.SpeciesRepository;
 import com.petparade.api.service.SpeciesService;
@@ -19,11 +20,11 @@ public class SpeciesServiceImpl implements SpeciesService {
   }
 
   @Override
-  public List<String> findAll() {
+  public List<SpeciesDto> findAll() {
     return this.speciesRepository
         .findAll()
         .stream()
-        .map(Species::getName)
+        .map(SpeciesDto::new)
         .collect(Collectors.toList());
   }
 }

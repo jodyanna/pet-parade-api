@@ -3,13 +3,17 @@ package com.petparade.api.dto;
 import com.petparade.api.model.Pet;
 import com.petparade.api.model.Rating;
 import com.petparade.api.model.User;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class PetDto {
   private Long id;
   private String name;
@@ -18,7 +22,7 @@ public class PetDto {
   private Boolean isFlagged;
   private Date dateCreated;
   private String image;
-  private String species;
+  private Long species;
   private Long owner;
   private List<RatingDto> ratings;
   private List<Long> likingUsers;
@@ -31,7 +35,7 @@ public class PetDto {
     this.setIsFlagged(pet.getFlagged());
     this.setDateCreated(pet.getDateCreated());
     this.setImage(pet.getImage());
-    this.setSpecies(pet.getSpecies().getName());
+    this.setSpecies(pet.getSpecies().getId());
     this.setOwner(pet.getUser().getId());
 
     // Set pet ratings with a list of rating dto

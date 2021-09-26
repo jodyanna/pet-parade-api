@@ -1,7 +1,9 @@
 package com.petparade.api.service;
 
+import com.petparade.api.dto.SpeciesDto;
+
 import java.util.List;
 
 public interface SpeciesService {
-  List<String> findAll();
+  List<SpeciesDto> findAll();
 }

@@ -1,5 +1,6 @@
 package com.petparade.api.controller;
 
+import com.petparade.api.dto.SpeciesDto;
 import com.petparade.api.service.SpeciesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,7 +20,7 @@ public class SpeciesController {
   }
 
   @GetMapping
-  public List<String> getAllSpecies() {
+  public List<SpeciesDto> getAllSpecies() {
     return this.speciesService.findAll();
   }
 }
