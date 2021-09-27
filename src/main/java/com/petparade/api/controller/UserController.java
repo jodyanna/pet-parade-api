@@ -49,7 +49,7 @@ public class UserController {
 
   @PutMapping
   public UserDto update(@RequestBody UserDto userDto) {
-    return this.userService.save(userDto);
+    return this.userService.update(userDto);
   }
 
   @DeleteMapping("{id}")

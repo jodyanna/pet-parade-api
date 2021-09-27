@@ -1,11 +1,15 @@
 package com.petparade.api.dto;
 
 import com.petparade.api.model.Rating;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Date;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class RatingDto {
   private Integer rating;
   private Long ratingUser;

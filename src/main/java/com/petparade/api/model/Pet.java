@@ -193,10 +193,6 @@ public class Pet {
         ", dateCreated=" + dateCreated +
         ", dateModified=" + dateModified +
         ", image='" + image + '\'' +
-        ", user=" + user +
-        ", species=" + species +
-        ", userLikes=" + userLikes +
-        ", ratings=" + ratings +
         '}';
   }
 }

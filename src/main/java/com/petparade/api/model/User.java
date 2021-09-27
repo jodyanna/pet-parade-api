@@ -50,12 +50,7 @@ public class User {
   )
   private Set<Pet> likedPets;
 
-  @OneToMany(
-      mappedBy = "user",
-      cascade = CascadeType.ALL,
-      fetch = FetchType.LAZY,
-      orphanRemoval = true
-  )
+  @OneToMany(mappedBy = "user")
   private Set<Rating> ratings;
 
   // Constructors
@@ -199,9 +194,6 @@ public class User {
         ", dateCreated=" + dateCreated +
         ", dateModified=" + dateModified +
         ", roles=" + roles +
-        ", pets=" + pets +
-        ", likedPets=" + likedPets +
-        ", ratings=" + ratings +
         '}';
   }
 }

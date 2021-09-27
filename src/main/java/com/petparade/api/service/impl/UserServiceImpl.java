@@ -84,6 +84,19 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
+  public UserDto update(UserDto userDto) {
+    User user = this.userRepository.findById(userDto.getId())
+        .orElseThrow(() -> new ResourceNotFoundException("Could not find user with id: " + userDto.getId()));
+    user.setUsername(userDto.getUsername());
+    user.setCity(userDto.getCity());
+    user.setState(userDto.getState());
+
+    User updatedUser = this.userRepository.save(user);
+
+    return new UserDto(updatedUser);
+  }
+
+  @Override
   public void deleteById(Long id) {
     this.userRepository.deleteById(id);
   }
