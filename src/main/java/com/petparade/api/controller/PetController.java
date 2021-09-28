@@ -1,5 +1,6 @@
 package com.petparade.api.controller;
 
+import com.petparade.api.dto.LeaderboardRequestDto;
 import com.petparade.api.dto.PetDto;
 import com.petparade.api.service.PetService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,15 @@ public class PetController {
   @GetMapping("{id}")
   public PetDto getPetById(@PathVariable Long id) {
     return this.petService.findById(id);
+  }
+
+  @PostMapping("species")
+  public List<PetDto> getPetsBySpecies(@RequestBody LeaderboardRequestDto leaderboardRequestDto) {
+    if (leaderboardRequestDto.getSpecies() == 0) {
+      return this.petService.findAll();
+    } else {
+      return this.petService.findAllBySpecies(leaderboardRequestDto.getSpecies());
+    }
   }
 
   @PostMapping

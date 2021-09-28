@@ -56,6 +56,15 @@ public class PetServiceImpl implements PetService {
   }
 
   @Override
+  public List<PetDto> findAllBySpecies(Long id) {
+    return this.petRepository
+        .getPetsBySpecies(id)
+        .stream()
+        .map(PetDto::new)
+        .collect(Collectors.toList());
+  }
+
+  @Override
   public PetDto save(PetDto petDto) {
     Pet pet = this.dtoToEntity(petDto);
     Pet savedPet = this.petRepository.save(pet);
