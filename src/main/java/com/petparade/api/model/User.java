@@ -36,7 +36,7 @@ public class User {
   @Temporal(TemporalType.DATE)
   private Date dateModified;
 
-  @OneToMany(mappedBy = "user")
+  @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
   private Set<Role> roles;
 
   @OneToMany(mappedBy = "user")

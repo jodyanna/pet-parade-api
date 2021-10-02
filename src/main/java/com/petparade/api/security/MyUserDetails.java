@@ -1,32 +1,43 @@
 package com.petparade.api.security;
 
+import com.petparade.api.model.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 
+@Transactional
 public class MyUserDetails implements UserDetails {
-  private String username;
+  private final String username;
+  private final String password;
+  private final List<GrantedAuthority> authorities;
 
-  public MyUserDetails(String username) {
-    this.username = username;
+  public MyUserDetails(User user) {
+    this.username = user.getEmail();
+    this.password = user.getPassword();
+    this.authorities = user.getRoles()
+        .stream()
+        .map(role -> new SimpleGrantedAuthority(role.getRole()))
+        .collect(Collectors.toList());
   }
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
-    return Arrays.asList(new SimpleGrantedAuthority("ROLE_USER"));
+    return authorities;
   }
 
   @Override
   public String getPassword() {
-    return "password";
+    return password;
   }
 
   @Override
   public String getUsername() {
-    return null;
+    return username;
   }
 
   @Override

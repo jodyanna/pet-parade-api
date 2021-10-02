@@ -22,12 +22,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
   @Override
   public void configure(HttpSecurity httpSecurity) throws Exception {
-    httpSecurity.authorizeRequests()
+    httpSecurity
+        .csrf().disable()
+        .authorizeRequests()
         .antMatchers("/users").hasRole("USER")
         .antMatchers("/pets").hasRole("USER")
         .antMatchers("/species").permitAll()
-        .antMatchers("/").permitAll()
-        .and().formLogin();
+        .antMatchers("/users/login").permitAll()
+        .antMatchers("/").permitAll();
   }
 
   @Bean
