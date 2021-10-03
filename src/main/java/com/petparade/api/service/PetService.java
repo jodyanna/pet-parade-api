@@ -1,6 +1,7 @@
 package com.petparade.api.service;
 
 import com.petparade.api.dto.PetDto;
+import com.petparade.api.dto.PetStatsDto;
 
 import java.util.List;
 

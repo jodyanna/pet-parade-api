@@ -71,7 +71,7 @@ public class UserServiceImpl implements UserService {
 
     if (userDto.getId() == null) {
       // Persist new user role
-      Role userRole = new Role("USER", savedUser);
+      Role userRole = new Role("ROLE_USER", savedUser);
       this.roleRepository.save(userRole);
 
       // Add role (in a set) to the saved user

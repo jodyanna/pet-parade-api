@@ -15,4 +15,7 @@ public interface RatingRepository extends JpaRepository<Rating, Long> {
 
   @Query(value = "SELECT r FROM Rating AS r WHERE r.pet.id=:id")
   Set<Rating> getAllRatingsByPetId(@Param(value = "id") Long id);
+
+  @Query(value = "SELECT AVG(r.rating) FROM Rating AS r WHERE r.pet.id=:id")
+  Double getPetRating(@Param("id") Long id);
 }

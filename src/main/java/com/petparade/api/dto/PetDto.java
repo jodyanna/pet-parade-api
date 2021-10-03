@@ -26,6 +26,7 @@ public class PetDto {
   private Long owner;
   private List<RatingDto> ratings;
   private List<Long> likingUsers;
+  private PetStatsDto stats;
 
   public PetDto(Pet pet) {
     this.setId(pet.getId());

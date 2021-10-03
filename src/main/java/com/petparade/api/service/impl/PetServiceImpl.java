@@ -1,6 +1,7 @@
 package com.petparade.api.service.impl;
 
 import com.petparade.api.dto.PetDto;
+import com.petparade.api.dto.PetStatsDto;
 import com.petparade.api.exception.ResourceNotFoundException;
 import com.petparade.api.model.Pet;
 import com.petparade.api.model.Rating;
@@ -43,7 +44,7 @@ public class PetServiceImpl implements PetService {
         .findById(id)
         .orElseThrow(() -> new ResourceNotFoundException("Could not find pet with id: " + id));
 
-    return new PetDto(pet);
+    return setupPetDto(pet);
   }
 
   @Override
@@ -51,7 +52,7 @@ public class PetServiceImpl implements PetService {
     return this.petRepository
         .findAll()
         .stream()
-        .map(PetDto::new)
+        .map(this::setupPetDto)
         .collect(Collectors.toList());
   }
 
@@ -60,7 +61,7 @@ public class PetServiceImpl implements PetService {
     return this.petRepository
         .getPetsBySpecies(id)
         .stream()
-        .map(PetDto::new)
+        .map(this::setupPetDto)
         .collect(Collectors.toList());
   }
 
@@ -75,6 +76,25 @@ public class PetServiceImpl implements PetService {
   @Override
   public void deleteById(Long id) {
     this.petRepository.deleteById(id);
+  }
+
+  // Utility methods
+
+  /**
+   * Sets up a new PetDto. The important thing here is that the stats for a pet get queried and set in addition
+   * to the pet entity.
+   * @param pet - pet entity object
+   * @return - pet data transfer object
+   */
+  private PetDto setupPetDto(Pet pet) {
+    PetDto petDto = new PetDto(pet);
+    PetStatsDto petStatsDto = new PetStatsDto();
+
+    petStatsDto.setRating(this.ratingRepository.getPetRating(pet.getId()));
+    petStatsDto.setLikes(pet.getUserLikes().size());
+    petDto.setStats(petStatsDto);
+
+    return petDto;
   }
 
   private Pet dtoToEntity(PetDto petDto) {
