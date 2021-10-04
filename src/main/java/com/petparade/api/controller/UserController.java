@@ -1,13 +1,13 @@
 package com.petparade.api.controller;
 
 import com.petparade.api.dto.UserDto;
+import com.petparade.api.dto.UserRequestDto;
 import com.petparade.api.security.MyUserDetailsService;
 import com.petparade.api.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,12 +16,10 @@ import java.util.List;
 @RequestMapping("users")
 public class UserController {
   private final UserService userService;
-  private final MyUserDetailsService myUserDetailsService;
 
   @Autowired
-  public UserController(UserService userService, MyUserDetailsService myUserDetailsService) {
+  public UserController(UserService userService) {
     this.userService = userService;
-    this.myUserDetailsService = myUserDetailsService;
   }
 
   @GetMapping
@@ -39,14 +37,8 @@ public class UserController {
       consumes = MediaType.APPLICATION_JSON_VALUE,
       produces = MediaType.APPLICATION_JSON_VALUE
   )
-  public ResponseEntity<UserDto> loginUser(@RequestBody UserDto userDto) {
-    UserDetails userDetails = this.myUserDetailsService.loadUserByUsername(userDto.getEmail());
-
-    if (userDto.getPassword().equals(userDetails.getPassword())) {
-      return ResponseEntity.ok().body(this.userService.findByEmailAndPassword(userDto.getEmail(), userDto.getPassword()));
-    } else {
-      return ResponseEntity.badRequest().build();
-    }
+  public ResponseEntity<UserDto> loginUser(@RequestBody UserRequestDto request) {
+    return ResponseEntity.ok().body(this.userService.findByEmailAndPassword(request.getEmail(), request.getPassword()));
   }
 
   @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
