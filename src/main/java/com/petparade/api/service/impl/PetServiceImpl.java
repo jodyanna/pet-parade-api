@@ -79,7 +79,6 @@ public class PetServiceImpl implements PetService {
   }
 
   // Utility methods
-
   /**
    * Sets up a new PetDto. The important thing here is that the stats for a pet get queried and set in addition
    * to the pet entity.

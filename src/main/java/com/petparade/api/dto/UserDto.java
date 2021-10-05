@@ -25,6 +25,7 @@ public class UserDto {
   private List<Long> pets;
   private List<Long> likedPets;
   private List<RatingDto> ratings;
+  private UserStatsDto stats;
 
   public UserDto(User user) {
     this.setId(user.getId());
@@ -63,6 +64,5 @@ public class UserDto {
       userRatings.add(ratingDto);
     }
     this.setRatings(userRatings);
-
   }
 }

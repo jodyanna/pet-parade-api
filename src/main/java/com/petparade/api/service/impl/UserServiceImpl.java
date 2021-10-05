@@ -1,6 +1,7 @@
 package com.petparade.api.service.impl;
 
 import com.petparade.api.dto.UserDto;
+import com.petparade.api.dto.UserStatsDto;
 import com.petparade.api.exception.ResourceNotFoundException;
 import com.petparade.api.model.Pet;
 import com.petparade.api.model.Role;
@@ -42,7 +43,7 @@ public class UserServiceImpl implements UserService {
         .findById(id)
         .orElseThrow(() -> new ResourceNotFoundException("Could not find user with id: " + id));
 
-    return new UserDto(user);
+    return setupUserDto(user);
   }
 
   @Override
@@ -51,7 +52,7 @@ public class UserServiceImpl implements UserService {
         .findByEmailAndPassword(email, password)
         .orElseThrow(() -> new ResourceNotFoundException("Could not find user with email: " + email + ", or password is incorrect."));
 
-    return new UserDto(user);
+    return setupUserDto(user);
   }
 
   @Override
@@ -59,7 +60,7 @@ public class UserServiceImpl implements UserService {
     return this.userRepository
         .findAll()
         .stream()
-        .map(UserDto::new)
+        .map(this::setupUserDto)
         .collect(Collectors.toList());
   }
 
@@ -80,7 +81,7 @@ public class UserServiceImpl implements UserService {
       savedUser.setRoles(userRoles);
     }
 
-    return new UserDto(savedUser);
+    return setupUserDto(savedUser);
   }
 
   @Override
@@ -93,12 +94,54 @@ public class UserServiceImpl implements UserService {
 
     User updatedUser = this.userRepository.save(user);
 
-    return new UserDto(updatedUser);
+    return setupUserDto(updatedUser);
   }
 
   @Override
   public void deleteById(Long id) {
     this.userRepository.deleteById(id);
+  }
+
+  // Utilities
+
+  /**
+   * Set up User data transfer object. User stats are calculated and set here.
+   * @param user - user entity object
+   * @return - user data transfer object
+   */
+  private UserDto setupUserDto(User user) {
+    UserDto userDto = new UserDto(user);
+    UserStatsDto userStatsDto = new UserStatsDto();
+
+    userStatsDto.setPetCount(user.getPets().size());
+    userStatsDto.setPetLikesCount(countUserPetsLikes(user.getPets()));
+    userStatsDto.setLikesGivenCount(user.getLikedPets().size());
+    userStatsDto.setPetRatingsCount(countUserPetsRatings(user.getPets()));
+    userStatsDto.setRatingsGivenCount(user.getRatings().size());
+
+    userDto.setStats(userStatsDto);
+
+    return userDto;
+  }
+
+  private Integer countUserPetsLikes(Set<Pet> pets) {
+    Integer count = 0;
+
+    for (Pet pet : pets) {
+      count += pet.getUserLikes().size();
+    }
+
+    return count;
+  }
+
+  private Integer countUserPetsRatings(Set<Pet> pets) {
+    Integer count = 0;
+
+    for (Pet pet : pets) {
+      count += pet.getRatings().size();
+    }
+
+    return count;
   }
 
   private User dtoToEntity(UserDto userDto) {

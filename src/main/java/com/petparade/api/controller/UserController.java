@@ -41,7 +41,7 @@ public class UserController {
     return ResponseEntity.ok().body(this.userService.findByEmailAndPassword(request.getEmail(), request.getPassword()));
   }
 
-  @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+  @PostMapping(value = "signup", produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<UserDto> save(@RequestBody UserDto userDto) {
     userDto.setId(null);
     UserDto body = this.userService.save(userDto);
