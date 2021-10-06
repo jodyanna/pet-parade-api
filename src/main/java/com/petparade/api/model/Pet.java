@@ -48,7 +48,7 @@ public class Pet {
   @JoinColumn(name = "FK_Pets_Species", referencedColumnName = "id")
   private Species species;
 
-  @ManyToMany(mappedBy = "likedPets")
+  @ManyToMany(mappedBy = "likedPets", cascade = CascadeType.ALL)
   private Set<User> userLikes;
 
   @OneToMany(mappedBy = "pet")

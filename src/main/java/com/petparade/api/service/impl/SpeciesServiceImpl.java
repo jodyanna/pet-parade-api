@@ -1,7 +1,6 @@
 package com.petparade.api.service.impl;
 
 import com.petparade.api.dto.SpeciesDto;
-import com.petparade.api.model.Species;
 import com.petparade.api.repository.SpeciesRepository;
 import com.petparade.api.service.SpeciesService;
 import org.springframework.beans.factory.annotation.Autowired;

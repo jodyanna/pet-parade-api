@@ -4,7 +4,6 @@ import com.petparade.api.dto.PetDto;
 import com.petparade.api.dto.PetStatsDto;
 import com.petparade.api.exception.ResourceNotFoundException;
 import com.petparade.api.model.Pet;
-import com.petparade.api.model.Rating;
 import com.petparade.api.model.Species;
 import com.petparade.api.model.User;
 import com.petparade.api.repository.PetRepository;

@@ -14,11 +14,14 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-  @Autowired
-  private MyUserDetailsService myUserDetailsService;
+  private final MyUserDetailsService myUserDetailsService;
+  private final JwtRequestFilter jwtRequestFilter;
 
   @Autowired
-  private JwtRequestFilter jwtRequestFilter;
+  public SecurityConfig(MyUserDetailsService myUserDetailsService, JwtRequestFilter jwtRequestFilter) {
+    this.myUserDetailsService = myUserDetailsService;
+    this.jwtRequestFilter = jwtRequestFilter;
+  }
 
   @Override
   protected void configure(HttpSecurity httpSecurity) throws Exception {
@@ -30,6 +33,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .antMatchers("/users").hasRole("USER")
         .antMatchers("/pets").hasRole("USER")
         .antMatchers("/ratings").hasRole("USER")
+        .antMatchers("/likes").hasRole("USER")
         .antMatchers("/pets/species").permitAll()
         .antMatchers("/pets/{\\d+}").permitAll()
         .antMatchers("/auth").permitAll()

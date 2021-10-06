@@ -40,6 +40,7 @@ public class PetController {
   @PostMapping
   public PetDto save(@RequestBody PetDto petDto) {
     petDto.setId(null);
+
     return this.petService.save(petDto);
   }
 
