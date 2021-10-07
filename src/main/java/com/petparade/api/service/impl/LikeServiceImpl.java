@@ -9,6 +9,8 @@ import com.petparade.api.service.LikeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Set;
+
 @Service
 public class LikeServiceImpl implements LikeService {
   private final UserRepository userRepository;
@@ -29,6 +31,26 @@ public class LikeServiceImpl implements LikeService {
     likedPet.getUserLikes().add(ratingUser);
     // Add liked pet to user
     ratingUser.getLikedPets().add(likedPet);
+
+    // Persist both user and pet
+    this.userRepository.save(ratingUser);
+    this.petRepository.save(likedPet);
+  }
+
+  @Override
+  public void delete(LikeRequestDto likeRequestDto) {
+    User ratingUser = this.userRepository.getById(likeRequestDto.getUserId());
+    Pet likedPet = this.petRepository.getById(likeRequestDto.getPetId());
+
+    // remove rating user from pet
+    Set<User> userLikes = likedPet.getUserLikes();
+    userLikes.remove(ratingUser);
+    likedPet.setUserLikes(userLikes);
+
+    // remove liked pet from user
+    Set<Pet> likedPets = ratingUser.getLikedPets();
+    likedPets.remove(likedPet);
+    ratingUser.setLikedPets(likedPets);
 
     // Persist both user and pet
     this.userRepository.save(ratingUser);
