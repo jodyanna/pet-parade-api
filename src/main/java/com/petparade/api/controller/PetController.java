@@ -28,6 +28,11 @@ public class PetController {
     return this.petService.findById(id);
   }
 
+  @GetMapping("recent")
+  public List<PetDto> getRecentCreatedPets() {
+    return this.petService.findRecentCreated();
+  }
+
   @PostMapping("species")
   public List<PetDto> getPetsBySpecies(@RequestBody LeaderboardRequestDto leaderboardRequestDto) {
     if (leaderboardRequestDto.getSpecies() == 0) {

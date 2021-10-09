@@ -9,6 +9,8 @@ public interface PetService {
 
   List<PetDto> findAll();
 
+  List<PetDto> findRecentCreated();
+
   List<PetDto> findAllBySpecies(Long id);
 
   PetDto save(PetDto petDto);

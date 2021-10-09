@@ -12,6 +12,7 @@ import com.petparade.api.repository.SpeciesRepository;
 import com.petparade.api.repository.UserRepository;
 import com.petparade.api.service.PetService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -50,6 +51,15 @@ public class PetServiceImpl implements PetService {
   public List<PetDto> findAll() {
     return this.petRepository
         .findAll()
+        .stream()
+        .map(this::setupPetDto)
+        .collect(Collectors.toList());
+  }
+
+  @Override
+  public List<PetDto> findRecentCreated() {
+    return this.petRepository
+        .getRecentCreatedPets()
         .stream()
         .map(this::setupPetDto)
         .collect(Collectors.toList());

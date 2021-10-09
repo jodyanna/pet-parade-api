@@ -36,6 +36,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .antMatchers("/likes").hasRole("USER")
         .antMatchers("/pets/species").permitAll()
         .antMatchers("/pets/{\\d+}").permitAll()
+        .antMatchers("pets/recent").permitAll()
         .antMatchers("/auth").permitAll()
         .antMatchers("/users/login").permitAll()
         .antMatchers("/users/signup").permitAll()
