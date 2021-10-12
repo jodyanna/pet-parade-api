@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface SpeciesService {
   List<SpeciesDto> findAll();
+
+  SpeciesDto save(SpeciesDto speciesDto);
 }

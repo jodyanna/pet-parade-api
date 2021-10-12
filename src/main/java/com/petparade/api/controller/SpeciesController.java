@@ -3,9 +3,7 @@ package com.petparade.api.controller;
 import com.petparade.api.dto.SpeciesDto;
 import com.petparade.api.service.SpeciesService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -22,5 +20,17 @@ public class SpeciesController {
   @GetMapping
   public List<SpeciesDto> getAllSpecies() {
     return this.speciesService.findAll();
+  }
+
+  @PostMapping("save")
+  public SpeciesDto save(@RequestBody SpeciesDto speciesDto) {
+    speciesDto.setId(null);
+
+    return this.speciesService.save(speciesDto);
+  }
+
+  @PutMapping("update")
+  public SpeciesDto update(@RequestBody SpeciesDto speciesDto) {
+    return this.speciesService.save(speciesDto);
   }
 }
