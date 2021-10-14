@@ -32,6 +32,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .authorizeRequests()
         .antMatchers("/species/update}").hasRole("ADMIN")
         .antMatchers("/species/save").hasRole("ADMIN")
+        .antMatchers("/pets/flagged").hasRole("ADMIN")
         .antMatchers("/users").hasRole("USER")
         .antMatchers("/pets").hasRole("USER")
         .antMatchers("/ratings").hasRole("USER")

@@ -33,6 +33,11 @@ public class PetController {
     return this.petService.findRecentCreated();
   }
 
+  @GetMapping("flagged")
+  public List<PetDto> getFlaggedPets() {
+    return this.petService.findAllFlaggedPets();
+  }
+
   @PostMapping("species")
   public List<PetDto> getPetsBySpecies(@RequestBody LeaderboardRequestDto leaderboardRequestDto) {
     if (leaderboardRequestDto.getSpecies() == 0) {

@@ -75,6 +75,15 @@ public class PetServiceImpl implements PetService {
   }
 
   @Override
+  public List<PetDto> findAllFlaggedPets() {
+    return this.petRepository
+        .getAllFlaggedPets()
+        .stream()
+        .map(this::setupPetDto)
+        .collect(Collectors.toList());
+  }
+
+  @Override
   public PetDto save(PetDto petDto) {
     Pet pet = this.dtoToEntity(petDto);
     Pet savedPet = this.petRepository.save(pet);

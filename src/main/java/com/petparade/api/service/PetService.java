@@ -11,6 +11,8 @@ public interface PetService {
 
   List<PetDto> findRecentCreated();
 
+  List<PetDto> findAllFlaggedPets();
+
   List<PetDto> findAllBySpecies(Long id);
 
   PetDto save(PetDto petDto);

@@ -18,4 +18,7 @@ public interface PetRepository extends JpaRepository<Pet, Long> {
 
   @Query(value = "SELECT * FROM `Pets` AS p ORDER BY `id` DESC LIMIT 2;", nativeQuery = true)
   Set<Pet> getRecentCreatedPets();
+
+  @Query(value = "SELECT p FROM Pet AS p WHERE p.isFlagged=true")
+  Set<Pet> getAllFlaggedPets();
 }
