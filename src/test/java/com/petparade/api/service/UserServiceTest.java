@@ -43,7 +43,7 @@ public class UserServiceTest {
 
   @Before
   public void setup() {
-    MockitoAnnotations.initMocks(this);
+    MockitoAnnotations.openMocks(this);
 
     this.userDto = new UserDto("test", "test@email.com", "password");
     this.user = new User();

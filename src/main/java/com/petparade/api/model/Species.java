@@ -17,7 +17,8 @@ public class Species {
   // Constructors
   public Species() {}
 
-  public Species(String name, Pet pet) {
+  public Species(Long id, String name) {
+    this.id = id;
     this.name = name;
   }
 
