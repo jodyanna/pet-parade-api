@@ -1,76 +1,67 @@
 package com.petparade.api.controller;
 
-import com.petparade.api.AbstractTest;
-import com.petparade.api.dto.RatingDto;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.petparade.api.PetParadeApplication;
 import com.petparade.api.dto.UserDto;
-import com.petparade.api.dto.UserStatsDto;
-import com.petparade.api.model.User;
 import org.junit.Before;
 import org.junit.jupiter.api.Assertions;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
 
-import java.util.Arrays;
-import java.util.Date;
+import java.io.IOException;
 
-public class UserControllerTest extends AbstractTest {
-  @Override
+@RunWith(SpringJUnit4ClassRunner.class)
+@SpringBootTest(classes = PetParadeApplication.class)
+@WebAppConfiguration
+public class UserControllerTest {
+  private MockMvc mockMvc;
+
+  @Autowired
+  private WebApplicationContext webApplicationContext;
+
   @Before
   public void setUp() {
-    super.setUp();
+    mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
   }
 
   @Test
   public void getAllUsers() throws Exception {
     String uri = "/users";
-    MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get(uri).accept(MediaType.APPLICATION_JSON_VALUE))
+    MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get(uri)
+        .accept(MediaType.APPLICATION_JSON_VALUE))
         .andReturn();
 
     int status = mvcResult.getResponse().getStatus();
     Assertions.assertEquals(200, status);
 
     String content = mvcResult.getResponse().getContentAsString();
-    UserDto[] users = super.mapFromJson(content, UserDto[].class);
+    UserDto[] users = mapFromJson(content, UserDto[].class);
     Assertions.assertTrue(users.length > 0);
   }
 
-  @Test
-  public void save() throws Exception {
-    String uri = "/users/signup";
-    UserDto testUser = setupTestUserDto();
+  // Utility Methods for mapping to json and back
+  private String mapToJson(Object obj) throws JsonProcessingException {
+    ObjectMapper objectMapper = new ObjectMapper();
 
-    String inputJson = super.mapToJson(testUser);
-    MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post(uri)
-        .contentType(MediaType.APPLICATION_JSON_VALUE).content(inputJson)).andReturn();
-
-    int status = mvcResult.getResponse().getStatus();
-    Assertions.assertEquals(200, status);
-
-    String content = mvcResult.getResponse().getContentAsString();
-    UserDto response = super.mapFromJson(content, UserDto.class);
-    Assertions.assertEquals(response, testUser);
+    return objectMapper.writeValueAsString(obj);
   }
 
-  // Utility methods
-  private UserDto setupTestUserDto() {
-    UserDto testUser = new UserDto();
+  private <T> T mapFromJson(String json, Class<T> clazz) throws JsonParseException, JsonMappingException, IOException {
+    ObjectMapper objectMapper = new ObjectMapper();
 
-    testUser.setUsername("test");
-    testUser.setEmail("test@test.com");
-    testUser.setPassword("test");
-    testUser.setDateCreated(new Date(1));
-    testUser.setRoles(Arrays.asList("ROLE_USER", "ROLE_ADMIN"));
-    testUser.setPets(Arrays.asList(1L, 2L, 3L));
-    testUser.setLikedPets(Arrays.asList(4L, 5L));
-    // Set ratings
-    RatingDto rating1 = new RatingDto(3, 1L, 4L, new Date());
-    RatingDto rating2 = new RatingDto(3, 1L, 5L, new Date());
-    testUser.setRatings(Arrays.asList(rating1, rating2));
-    // Set stats
-    testUser.setStats(new UserStatsDto(3, 0, 2, 2, 0));
-
-    return testUser;
+    return objectMapper.readValue(json, clazz);
   }
 }
