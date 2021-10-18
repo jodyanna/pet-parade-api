@@ -47,23 +47,23 @@ public class UserServiceTest {
 
     this.userDto = new UserDto("test", "test@email.com", "password");
     this.user = new User();
-    user.setId(1L);
-    user.setUsername("test");
-    user.setEmail("test@email.com");
-    user.setPassword("password");
-    user.setDateCreated(new Date(1));
+    this.user.setId(1L);
+    this.user.setUsername("test");
+    this.user.setEmail("test@email.com");
+    this.user.setPassword("password");
+    this.user.setDateCreated(new Date(1));
 
     Set<Role> roles = new HashSet<>();
-    user.setRoles(roles);
+    this.user.setRoles(roles);
 
     Set<Pet> pets = new HashSet<>();
-    user.setPets(pets);
+    this.user.setPets(pets);
 
     Set<Pet> likedPets = new HashSet<>();
-    user.setLikedPets(likedPets);
+    this.user.setLikedPets(likedPets);
 
     Set<Rating> ratings = new HashSet<>();
-    user.setRatings(ratings);
+    this.user.setRatings(ratings);
   }
 
   @Test
