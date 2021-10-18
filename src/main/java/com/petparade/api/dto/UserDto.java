@@ -26,6 +26,12 @@ public class UserDto {
   private List<RatingDto> ratings;
   private UserStatsDto stats;
 
+  public UserDto(String username, String email, String password) {
+    this.username = username;
+    this.email = email;
+    this.password = password;
+  }
+
   public UserDto(User user) {
     this.setId(user.getId());
     this.setUsername(user.getUsername());
