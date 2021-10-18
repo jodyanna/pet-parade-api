@@ -2,119 +2,119 @@
 -- Fake species
 INSERT INTO `PetParade`.`Species`
 (`name`)
-VALUES ("DOG");
+VALUES ('DOG');
 
 INSERT INTO `PetParade`.`Species`
 (`name`)
-VALUES ("CAT");
+VALUES ('CAT');
 
 INSERT INTO `PetParade`.`Species`
 (`name`)
-VALUES ("BIRD");
+VALUES ('BIRD');
 
 INSERT INTO `PetParade`.`Species`
 (`name`)
-VALUES ("FISH");
+VALUES ('FISH');
 
 INSERT INTO `PetParade`.`Species`
 (`name`)
-VALUES ("GOAT");
+VALUES ('GOAT');
 
 INSERT INTO `PetParade`.`Species`
 (`name`)
-VALUES ("PIG");
+VALUES ('PIG');
 
 INSERT INTO `PetParade`.`Species`
 (`name`)
-VALUES ("SHEEP");
+VALUES ('SHEEP');
 
 INSERT INTO `PetParade`.`Species`
 (`name`)
-VALUES ("COW");
+VALUES ('COW');
 
 INSERT INTO `PetParade`.`Species`
 (`name`)
-VALUES ("DONKEY");
+VALUES ('DONKEY');
 
 INSERT INTO `PetParade`.`Species`
 (`name`)
-VALUES ("HORSE");
+VALUES ('HORSE');
 
 INSERT INTO `PetParade`.`Species`
 (`name`)
-VALUES ("FERRET");
+VALUES ('FERRET');
 
 INSERT INTO `PetParade`.`Species`
 (`name`)
-VALUES ("RABBIT");
+VALUES ('RABBIT');
 
 INSERT INTO `PetParade`.`Species`
 (`name`)
-VALUES ("RODENT");
+VALUES ('RODENT');
 
 INSERT INTO `PetParade`.`Species`
 (`name`)
-VALUES ("INSECT");
+VALUES ('INSECT');
 
 INSERT INTO `PetParade`.`Species`
 (`name`)
-VALUES ("REPTILE");
+VALUES ('REPTILE');
 
 INSERT INTO `PetParade`.`Species`
 (`name`)
-VALUES ("FOX");
+VALUES ('FOX');
 
 INSERT INTO `PetParade`.`Species`
 (`name`)
-VALUES ("OTHER");
+VALUES ('OTHER');
 
 -- Insert fake user data
 -- Fake user id=1
 INSERT INTO `PetParade`.`Users`
 (`username`, `email`, `password`)
-VALUES ("admin", "admin@email.com", "password");
+VALUES ('admin', 'admin@email.com', "password");
 
 INSERT INTO `PetParade`.`Roles`
 (`role`, `FK_Roles_Users`)
-VALUES ("ROLE_USER", 1);
+VALUES ('ROLE_USER', 1);
 
 INSERT INTO `PetParade`.`Roles`
 (`role`, `FK_Roles_Users`)
-VALUES ("ROLE_ADMIN", 1);
+VALUES ('ROLE_ADMIN', 1);
 
 INSERT INTO `PetParade`.`Pets`
 (`name`, `bio`, `birthday`, `isFlagged`, `FK_Pets_Users`, `FK_Pets_Species`)
-VALUES ("Gus", "Itchy dog that loves scratching!", "2009-09-09", 0, 1, 1);
+VALUES ('Gus', 'Itchy dog that loves scratching!', '2009-09-09', 0, 1, 1);
 
 INSERT INTO `PetParade`.`Pets`
 (`name`, `bio`, `birthday`, `isFlagged`, `FK_Pets_Users`, `FK_Pets_Species`)
-VALUES ("Tag", "Example dog bio would go here", "2004-04-04", 0, 1, 1);
+VALUES ('Tag', 'Example dog bio would go here', '2004-04-04', 0, 1, 1);
 
 -- Fake user id=2
 INSERT INTO `PetParade`.`Users`
 (`username`, `email`, `password`)
-VALUES ("test", "test@email.com", "password");
+VALUES ('test', 'test@email.com', 'password');
 
 INSERT INTO `PetParade`.`Roles`
 (`role`, `FK_Roles_Users`)
-VALUES ("ROLE_USER", 2);
+VALUES ('ROLE_USER', 2);
 
 INSERT INTO `PetParade`.`Pets`
 (`name`, `bio`, `birthday`, `isFlagged`, `FK_Pets_Users`, `FK_Pets_Species`)
-VALUES ("Cat", "Meow meow meow meow meow", "2009-09-09", 0, 2, 2);
+VALUES ('Cat', 'Meow meow meow meow meow', '2009-09-09', 0, 2, 2);
 
 -- Fake user id=3
 INSERT INTO `PetParade`.`Users`
 (`username`, `email`, `password`)
-VALUES ("test2", "test2@email.com", "password");
+VALUES ('test2', 'test2@email.com', 'password');
 
 INSERT INTO `PetParade`.`Roles`
 (`role`, `FK_Roles_Users`)
-VALUES ("ROLE_USER", 3);
+VALUES ('ROLE_USER', 3);
 
 INSERT INTO `PetParade`.`Pets`
 (`name`, `bio`, `birthday`, `isFlagged`, `FK_Pets_Users`, `FK_Pets_Species`)
-VALUES ("Sebastian", "I'm actually a crab", "2009-09-09", 0, 3, 2);
+VALUES ('Sebastian', 'I am actually a crab', '2009-09-09', 0, 3, 2);
 
 -- Fake likes
 INSERT INTO `PetParade`.`Likes`
