@@ -72,7 +72,8 @@ public class UserControllerTest {
     mockMvc.perform(MockMvcRequestBuilders.post(uri)
             .contentType(MediaType.APPLICATION_JSON)
             .content("{\"email\": \"test@email.com\"," +
-                " \"password\": \"password\"}")
+                " \"password\": \"password\"" +
+                "}")
             .accept(MediaType.APPLICATION_JSON))
             .andDo(print())
             .andExpect(status().isOk())
