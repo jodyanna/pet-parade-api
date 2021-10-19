@@ -1,9 +1,5 @@
 package com.petparade.api.controller;
 
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.petparade.api.PetParadeApplication;
 import com.petparade.api.dto.UserDto;
 import com.petparade.api.service.UserService;
@@ -68,7 +64,30 @@ public class UserControllerTest {
   }
 
   @Test
-  public void save() throws Exception {
+  public void login() throws Exception {
+    String uri = "/users/login";
+
+    when(userService.findByEmailAndPassword(anyString(), anyString())).thenReturn(userDto);
+
+    mockMvc.perform(MockMvcRequestBuilders.post(uri)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content("{\"email\": \"test@email.com\"," +
+                " \"password\": \"password\"}")
+            .accept(MediaType.APPLICATION_JSON))
+            .andDo(print())
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(jsonPath("$.username").exists())
+            .andExpect(jsonPath("$.username").value("test"))
+            .andExpect(jsonPath("$.email").exists())
+            .andExpect(jsonPath("$.email").value("test@email.com"))
+            .andExpect(jsonPath("$.password").exists())
+            .andExpect(jsonPath("$.password").value("password"))
+            .andReturn();
+  }
+
+  @Test
+  public void signup() throws Exception {
     String uri = "/users/signup";
 
     when(userService.save(any())).thenReturn(userDto);
