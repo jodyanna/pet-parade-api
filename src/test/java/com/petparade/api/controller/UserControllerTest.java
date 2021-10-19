@@ -6,22 +6,29 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.petparade.api.PetParadeApplication;
 import com.petparade.api.dto.UserDto;
+import com.petparade.api.service.UserService;
 import org.junit.Before;
-import org.junit.jupiter.api.Assertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import java.io.IOException;
+import java.util.Collections;
+import java.util.List;
+
+import static org.hamcrest.Matchers.greaterThan;
+import static org.mockito.Mockito.*;
+import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = PetParadeApplication.class)
@@ -32,36 +39,58 @@ public class UserControllerTest {
   @Autowired
   private WebApplicationContext webApplicationContext;
 
+  @MockBean
+  private UserService userService;
+
+  private UserDto userDto;
+
   @Before
   public void setUp() {
     mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+
+    this.userDto = new UserDto("test", "test@email.com", "password");
   }
 
   @Test
   public void getAllUsers() throws Exception {
     String uri = "/users";
-    MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get(uri)
-        .accept(MediaType.APPLICATION_JSON_VALUE))
-        .andReturn();
+    List<UserDto> userDtoList = Collections.singletonList(userDto);
 
-    int status = mvcResult.getResponse().getStatus();
-    Assertions.assertEquals(200, status);
+    when(userService.findAll()).thenReturn(userDtoList);
 
-    String content = mvcResult.getResponse().getContentAsString();
-    UserDto[] users = mapFromJson(content, UserDto[].class);
-    Assertions.assertTrue(users.length > 0);
+    mockMvc.perform(MockMvcRequestBuilders.get(uri)
+            .accept(MediaType.APPLICATION_JSON_VALUE))
+            .andDo(print())
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(jsonPath("$", hasSize(greaterThan(0))))
+            .andReturn();
   }
 
-  // Utility Methods for mapping to json and back
-  private String mapToJson(Object obj) throws JsonProcessingException {
-    ObjectMapper objectMapper = new ObjectMapper();
+  @Test
+  public void save() throws Exception {
+    String uri = "/users/signup";
 
-    return objectMapper.writeValueAsString(obj);
+    when(userService.save(any())).thenReturn(userDto);
+
+    mockMvc.perform(MockMvcRequestBuilders.post(uri)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content("{\"username\": \"test\", " +
+                    "\"email\": \"test@email.com\"," +
+                    " \"password\": \"password\"}")
+            .accept(MediaType.APPLICATION_JSON))
+            .andDo(print())
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(jsonPath("$.username").exists())
+            .andExpect(jsonPath("$.username").value("test"))
+            .andExpect(jsonPath("$.email").exists())
+            .andExpect(jsonPath("$.email").value("test@email.com"))
+            .andExpect(jsonPath("$.password").exists())
+            .andExpect(jsonPath("$.password").value("password"))
+            .andReturn();
   }
 
-  private <T> T mapFromJson(String json, Class<T> clazz) throws JsonParseException, JsonMappingException, IOException {
-    ObjectMapper objectMapper = new ObjectMapper();
 
-    return objectMapper.readValue(json, clazz);
-  }
+
 }
