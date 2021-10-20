@@ -6,6 +6,7 @@ import com.petparade.api.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -29,19 +30,19 @@ public class UserController {
   }
 
   @PostMapping(value = "login")
-  public UserDto loginUser(@RequestBody UserRequestDto request) {
+  public UserDto loginUser(@Valid @RequestBody UserRequestDto request) {
     return this.userService.findByEmailAndPassword(request.getEmail(), request.getPassword());
   }
 
   @PostMapping(value = "signup")
-  public UserDto save(@RequestBody UserDto userDto) {
+  public UserDto save(@Valid @RequestBody UserDto userDto) {
     userDto.setId(null);
 
     return this.userService.save(userDto);
   }
 
   @PutMapping
-  public UserDto update(@RequestBody UserDto userDto) {
+  public UserDto update(@Valid @RequestBody UserDto userDto) {
     return this.userService.update(userDto);
   }
 

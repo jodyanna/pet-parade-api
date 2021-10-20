@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("ratings")
 public class RatingController {
@@ -21,7 +23,7 @@ public class RatingController {
   }
 
   @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-  public RatingDto save(@RequestBody RatingRequestDto ratingRequestDto) {
+  public RatingDto save(@Valid @RequestBody RatingRequestDto ratingRequestDto) {
     return this.ratingService.save(ratingRequestDto);
   }
 }

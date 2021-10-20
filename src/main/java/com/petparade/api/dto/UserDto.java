@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotEmpty;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -14,16 +15,30 @@ import java.util.List;
 @AllArgsConstructor
 public class UserDto {
   private Long id;
+
+  @NotEmpty(message = "Username is required")
   private String username;
+
+  @NotEmpty(message = "Email is required")
   private String email;
+
+  @NotEmpty(message = "Password is required")
   private String password;
+
   private String city;
+
   private String state;
+
   private Date dateCreated;
+
   private List<String> roles;
+
   private List<Long> pets;
+
   private List<Long> likedPets;
+
   private List<RatingDto> ratings;
+
   private UserStatsDto stats;
 
   public UserDto(String username, String email, String password) {

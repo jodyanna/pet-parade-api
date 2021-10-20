@@ -5,6 +5,7 @@ import com.petparade.api.service.SpeciesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -23,14 +24,14 @@ public class SpeciesController {
   }
 
   @PostMapping("save")
-  public SpeciesDto save(@RequestBody SpeciesDto speciesDto) {
+  public SpeciesDto save(@Valid @RequestBody SpeciesDto speciesDto) {
     speciesDto.setId(null);
 
     return this.speciesService.save(speciesDto);
   }
 
   @PutMapping("update")
-  public SpeciesDto update(@RequestBody SpeciesDto speciesDto) {
+  public SpeciesDto update(@Valid @RequestBody SpeciesDto speciesDto) {
     return this.speciesService.save(speciesDto);
   }
 }

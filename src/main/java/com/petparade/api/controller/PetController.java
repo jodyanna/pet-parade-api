@@ -6,6 +6,7 @@ import com.petparade.api.service.PetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -39,7 +40,7 @@ public class PetController {
   }
 
   @PostMapping("species")
-  public List<PetDto> getPetsBySpecies(@RequestBody LeaderboardRequestDto leaderboardRequestDto) {
+  public List<PetDto> getPetsBySpecies(@Valid @RequestBody LeaderboardRequestDto leaderboardRequestDto) {
     if (leaderboardRequestDto.getSpecies() == 0) {
       return this.petService.findAll();
     } else {
@@ -48,19 +49,19 @@ public class PetController {
   }
 
   @PostMapping
-  public PetDto save(@RequestBody PetDto petDto) {
+  public PetDto save(@Valid @RequestBody PetDto petDto) {
     petDto.setId(null);
 
     return this.petService.save(petDto);
   }
 
   @PutMapping
-  public PetDto update(@RequestBody PetDto petDto) {
+  public PetDto update(@Valid @RequestBody PetDto petDto) {
     return this.petService.save(petDto);
   }
 
   @DeleteMapping("{id}")
-  public void deletePetById(@PathVariable Long id) {
+  public void deletePetById(@Valid @PathVariable Long id) {
     this.petService.deleteById(id);
   }
 
