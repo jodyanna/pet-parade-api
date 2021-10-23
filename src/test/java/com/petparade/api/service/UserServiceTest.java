@@ -1,5 +1,6 @@
 package com.petparade.api.service;
 
+import com.petparade.api.dto.SignupRequestDto;
 import com.petparade.api.dto.UserDto;
 import com.petparade.api.model.Pet;
 import com.petparade.api.model.Rating;
@@ -17,6 +18,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.*;
 
@@ -37,15 +39,20 @@ public class UserServiceTest {
   @Mock
   private RatingRepository ratingRepository;
   @Mock
+  PasswordEncoder passwordEncoder;
+
   private UserDto userDto;
-  @Mock
   private User user;
+  private SignupRequestDto signupRequestDto;
 
   @Before
   public void setup() {
     MockitoAnnotations.openMocks(this);
 
-    this.userDto = new UserDto("test", "test@email.com", "password");
+    this.userDto = new UserDto("test", "test@email.com");
+
+    this.signupRequestDto = new SignupRequestDto("test", "test@email.com", "test");
+
     this.user = new User();
     this.user.setId(1L);
     this.user.setUsername("test");
@@ -75,20 +82,18 @@ public class UserServiceTest {
     // then
     assertEquals("test", result.getUsername());
     assertEquals("test@email.com", result.getEmail());
-    assertEquals("password", result.getPassword());
   }
 
   @Test
   public void findByUsernameAndPassword() {
     // when
-    when(userRepository.findByEmailAndPassword(anyString(), anyString()))
+    when(userRepository.findByEmail(anyString()))
         .thenReturn(Optional.ofNullable(user));
-    UserDto result = userService.findByEmailAndPassword("test@email.com", "password");
+    UserDto result = userService.findByEmail("test@email.com");
 
     // then
     assertEquals("test", result.getUsername());
     assertEquals("test@email.com", result.getEmail());
-    assertEquals("password", result.getPassword());
   }
 
   @Test
@@ -106,11 +111,10 @@ public class UserServiceTest {
     when(userRepository.save(any())).thenReturn(user);
     when(roleRepository.save(any())).thenReturn(new Role("ROLE_USER", user));
 
-    UserDto result = userService.save(userDto);
+    UserDto result = userService.save(signupRequestDto);
 
     assertEquals("test", result.getUsername());
     assertEquals("test@email.com", result.getEmail());
-    assertEquals("password", result.getPassword());
     assertEquals("ROLE_USER", result.getRoles().get(0));
   }
 
@@ -125,6 +129,5 @@ public class UserServiceTest {
 
     assertEquals("test", result.getUsername());
     assertEquals("test@email.com", result.getEmail());
-    assertEquals("password", result.getPassword());
   }
 }

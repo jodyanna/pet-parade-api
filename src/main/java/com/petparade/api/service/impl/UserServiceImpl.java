@@ -1,5 +1,6 @@
 package com.petparade.api.service.impl;
 
+import com.petparade.api.dto.SignupRequestDto;
 import com.petparade.api.dto.UserDto;
 import com.petparade.api.dto.UserStatsDto;
 import com.petparade.api.exception.ResourceNotFoundException;
@@ -12,6 +13,7 @@ import com.petparade.api.repository.RoleRepository;
 import com.petparade.api.repository.UserRepository;
 import com.petparade.api.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -23,18 +25,21 @@ public class UserServiceImpl implements UserService {
   private final PetRepository petRepository;
   private final RoleRepository roleRepository;
   private final RatingRepository ratingRepository;
+  private final PasswordEncoder passwordEncoder;
 
   @Autowired
   public UserServiceImpl(
       UserRepository userRepository,
       PetRepository petRepository,
       RoleRepository roleRepository,
-      RatingRepository ratingRepository
+      RatingRepository ratingRepository,
+      PasswordEncoder passwordEncoder
   ) {
     this.userRepository = userRepository;
     this.petRepository = petRepository;
     this.roleRepository = roleRepository;
     this.ratingRepository = ratingRepository;
+    this.passwordEncoder = passwordEncoder;
   }
 
   @Override
@@ -47,10 +52,10 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public UserDto findByEmailAndPassword(String email, String password) {
+  public UserDto findByEmail(String email) {
     User user = this.userRepository
-        .findByEmailAndPassword(email, password)
-        .orElseThrow(() -> new ResourceNotFoundException("Could not find user with email: " + email + ", or password is incorrect."));
+        .findByEmail(email)
+        .orElseThrow(() -> new ResourceNotFoundException("Could not find user with email: " + email));
 
     return setupUserDto(user);
   }
@@ -65,21 +70,30 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public UserDto save(UserDto userDto) {
+  public UserDto save(SignupRequestDto requestDto) {
+    // Build new User entity
+    User newUser = new User();
+    newUser.setId(null);
+    newUser.setUsername(requestDto.getUsername());
+    newUser.setEmail(requestDto.getEmail());
+    // Encode new user password
+    newUser.setPassword(passwordEncoder.encode(requestDto.getPassword()));
+    newUser.setDateCreated(new Date());
+    newUser.setPets(new HashSet<>());
+    newUser.setLikedPets(new HashSet<>());
+    newUser.setRatings(new HashSet<>());
+
     // Persist user
-    User user = this.dtoToEntity(userDto);
-    User savedUser = this.userRepository.save(user);
+    User savedUser = this.userRepository.save(newUser);
 
-    if (userDto.getId() == null) {
-      // Persist new user role
-      Role userRole = new Role("ROLE_USER", savedUser);
-      this.roleRepository.save(userRole);
+    // Persist new user role
+    Role userRole = new Role("ROLE_USER", savedUser);
+    this.roleRepository.save(userRole);
 
-      // Add role (in a set) to the saved user
-      Set<Role> userRoles = new HashSet<>(Collections.emptySet());
-      userRoles.add(userRole);
-      savedUser.setRoles(userRoles);
-    }
+    // Add role (in a set) to the saved user
+    Set<Role> userRoles = new HashSet<>(Collections.emptySet());
+    userRoles.add(userRole);
+    savedUser.setRoles(userRoles);
 
     return setupUserDto(savedUser);
   }
@@ -150,7 +164,6 @@ public class UserServiceImpl implements UserService {
     user.setId(userDto.getId());
     user.setUsername(userDto.getUsername());
     user.setEmail(userDto.getEmail());
-    user.setPassword(userDto.getPassword());
     user.setCity(user.getCity());
     user.setState(user.getState());
 

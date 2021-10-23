@@ -9,7 +9,7 @@ import javax.validation.constraints.NotEmpty;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserRequestDto {
+public class LoginRequestDto {
   @NotEmpty(message = "Email is required")
   private String email;
 

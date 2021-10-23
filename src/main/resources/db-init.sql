@@ -7,7 +7,7 @@ CREATE TABLE `PetParade`.`Users` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `username` VARCHAR(45) NOT NULL,
   `email` VARCHAR(45) NOT NULL,
-  `password` VARCHAR(45) NOT NULL,
+  `password` VARCHAR(65) NOT NULL,
   `city` VARCHAR(45) NULL,
   `state` VARCHAR(45) NULL,
   `dateCreated` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,

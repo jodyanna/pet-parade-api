@@ -1,7 +1,8 @@
 package com.petparade.api.controller;
 
+import com.petparade.api.dto.SignupRequestDto;
 import com.petparade.api.dto.UserDto;
-import com.petparade.api.dto.UserRequestDto;
+import com.petparade.api.dto.LoginRequestDto;
 import com.petparade.api.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -30,15 +31,13 @@ public class UserController {
   }
 
   @PostMapping(value = "login")
-  public UserDto loginUser(@Valid @RequestBody UserRequestDto request) {
-    return this.userService.findByEmailAndPassword(request.getEmail(), request.getPassword());
+  public UserDto loginUser(@Valid @RequestBody LoginRequestDto request) {
+    return this.userService.findByEmail(request.getEmail());
   }
 
   @PostMapping(value = "signup")
-  public UserDto save(@Valid @RequestBody UserDto userDto) {
-    userDto.setId(null);
-
-    return this.userService.save(userDto);
+  public UserDto save(@Valid @RequestBody SignupRequestDto requestDto) {
+    return this.userService.save(requestDto);
   }
 
   @PutMapping

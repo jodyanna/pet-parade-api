@@ -44,7 +44,7 @@ public class UserControllerTest {
   public void setUp() {
     mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
 
-    this.userDto = new UserDto("test", "test@email.com", "password");
+    this.userDto = new UserDto("test", "test@email.com");
   }
 
   @Test
@@ -67,7 +67,7 @@ public class UserControllerTest {
   public void login() throws Exception {
     String uri = "/users/login";
 
-    when(userService.findByEmailAndPassword(anyString(), anyString())).thenReturn(userDto);
+    when(userService.findByEmail(anyString())).thenReturn(userDto);
 
     mockMvc.perform(MockMvcRequestBuilders.post(uri)
             .contentType(MediaType.APPLICATION_JSON)
@@ -82,8 +82,6 @@ public class UserControllerTest {
             .andExpect(jsonPath("$.username").value("test"))
             .andExpect(jsonPath("$.email").exists())
             .andExpect(jsonPath("$.email").value("test@email.com"))
-            .andExpect(jsonPath("$.password").exists())
-            .andExpect(jsonPath("$.password").value("password"))
             .andReturn();
   }
 
@@ -106,8 +104,6 @@ public class UserControllerTest {
             .andExpect(jsonPath("$.username").value("test"))
             .andExpect(jsonPath("$.email").exists())
             .andExpect(jsonPath("$.email").value("test@email.com"))
-            .andExpect(jsonPath("$.password").exists())
-            .andExpect(jsonPath("$.password").value("password"))
             .andReturn();
   }
 

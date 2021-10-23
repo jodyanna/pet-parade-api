@@ -22,9 +22,6 @@ public class UserDto {
   @NotEmpty(message = "Email is required")
   private String email;
 
-  @NotEmpty(message = "Password is required")
-  private String password;
-
   private String city;
 
   private String state;
@@ -41,17 +38,15 @@ public class UserDto {
 
   private UserStatsDto stats;
 
-  public UserDto(String username, String email, String password) {
+  public UserDto(String username, String email) {
     this.username = username;
     this.email = email;
-    this.password = password;
   }
 
   public UserDto(User user) {
     this.setId(user.getId());
     this.setUsername(user.getUsername());
     this.setEmail(user.getEmail());
-    this.setPassword(user.getPassword());
     this.setCity(user.getCity());
     this.setState(user.getState());
     this.setDateCreated(user.getDateCreated());
